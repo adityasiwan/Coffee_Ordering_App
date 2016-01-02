@@ -22,9 +22,20 @@ public class MainActivity extends ActionBarActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        display(1);
-        displayPrice(1);
+        displayPrice(quantity * 5);
     }
+    int quantity=0;
+    public void increment(View view){
+        display(++quantity);
+    }
+
+    public void decrement(View view){
+        if(quantity>0)
+        display(--quantity);
+        else
+            display(0);
+    }
+
 
     /**
      * This method displays the given quantity value on the screen.
