@@ -1,5 +1,7 @@
 package com.example.android.justjava;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +33,15 @@ public class MainActivity extends AppCompatActivity {
         boolean hasChocolate = ChocolateCheckBox.isChecked();
         EditText NameEditText = (EditText)findViewById(R.id.name_field);
         String value = NameEditText.getText().toString();
-        createOrderSummary(quantity,10,hasWhippedCream,hasChocolate,value);
+        String output = createOrderSummary(quantity, 10, hasWhippedCream, hasChocolate, value);
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));// only email apps should handle this
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Order Summary for " + value);
+        intent.putExtra(Intent.EXTRA_TEXT, output);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+        displayMessage(output);
     }
     int quantity=0;
     public void increment(View view){
@@ -45,25 +55,23 @@ public class MainActivity extends AppCompatActivity {
             display(0);
     }
 
-    public void createOrderSummary(int no,int pricePerCup,boolean addWhippedCream,boolean addChocolate,String name){
+    public String createOrderSummary(int no,int pricePerCup,boolean addWhippedCream,boolean addChocolate,String name){
         String priceMessage="Name: "+name;
         priceMessage=priceMessage+"\nQuantity: "+no;
-        priceMessage=priceMessage+"\nWhipped Cream Added?"+addWhippedCream;
-        priceMessage=priceMessage+"\nChocolate Added?"+addChocolate;
+        priceMessage=priceMessage+"\nWhipped Cream Added: "+addWhippedCream;
+        priceMessage=priceMessage+"\nChocolate Added: "+addChocolate;
         int total=no*pricePerCup;
         if(addWhippedCream)
         {
-            total+=5;
+            total=total+(no*1);
         }
         if(addChocolate)
         {
-            total+=5;
+            total=total+(no*2);
         }
         priceMessage=priceMessage+"\nTotal: Rs."+(total)+".00\nThank You!";
-        displayMessage(priceMessage);
+        return priceMessage;
     }
-
-
     /**
      * This method displays the given quantity value on the screen.
      */
