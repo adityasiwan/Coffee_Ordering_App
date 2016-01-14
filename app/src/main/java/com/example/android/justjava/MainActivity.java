@@ -1,16 +1,13 @@
 package com.example.android.justjava;
-
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.text.NumberFormat;
 
 /**
  * This app displays an order form to order coffee.
@@ -21,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
+    }
     /**
      * This method is called when the order button is clicked.
      */
@@ -35,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         String value = NameEditText.getText().toString();
         String output = createOrderSummary(quantity, 10, hasWhippedCream, hasChocolate, value);
         Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:"));// only email apps should handle this
+        intent.setData(Uri.parse("mailto:adityasiwan@live.com"));// only email apps should handle this
         intent.putExtra(Intent.EXTRA_SUBJECT, "Order Summary for " + value);
         intent.putExtra(Intent.EXTRA_TEXT, output);
         if (intent.resolveActivity(getPackageManager()) != null) {
@@ -91,3 +88,4 @@ public class MainActivity extends AppCompatActivity {
         orderSummaryTextView.setText(message);
     }
 }
+
