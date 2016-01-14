@@ -2,7 +2,10 @@ package com.example.android.justjava;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -10,7 +13,7 @@ import java.text.NumberFormat;
 /**
  * This app displays an order form to order coffee.
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +25,13 @@ public class MainActivity extends ActionBarActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        displayPrice(quantity * 5);
+        CheckBox WhippedCreamCheckBox= (CheckBox)findViewById(R.id.whipped_cream_checkbox);
+        boolean hasWhippedCream = WhippedCreamCheckBox.isChecked();
+        CheckBox ChocolateCheckBox = (CheckBox) findViewById(R.id.chocolate_cream_checkbox);
+        boolean hasChocolate = ChocolateCheckBox.isChecked();
+        EditText NameEditText = (EditText)findViewById(R.id.name_field);
+        String value = NameEditText.getText().toString();
+        createOrderSummary(quantity,10,hasWhippedCream,hasChocolate,value);
     }
     int quantity=0;
     public void increment(View view){
@@ -36,6 +45,24 @@ public class MainActivity extends ActionBarActivity {
             display(0);
     }
 
+    public void createOrderSummary(int no,int pricePerCup,boolean addWhippedCream,boolean addChocolate,String name){
+        String priceMessage="Name: "+name;
+        priceMessage=priceMessage+"\nQuantity: "+no;
+        priceMessage=priceMessage+"\nWhipped Cream Added?"+addWhippedCream;
+        priceMessage=priceMessage+"\nChocolate Added?"+addChocolate;
+        int total=no*pricePerCup;
+        if(addWhippedCream)
+        {
+            total+=5;
+        }
+        if(addChocolate)
+        {
+            total+=5;
+        }
+        priceMessage=priceMessage+"\nTotal: Rs."+(total)+".00\nThank You!";
+        displayMessage(priceMessage);
+    }
+
 
     /**
      * This method displays the given quantity value on the screen.
@@ -46,11 +73,13 @@ public class MainActivity extends ActionBarActivity {
         quantityTextView.setText("" + number);
     }
 
+
+
     /**
-     * This method displays the given price on the screen.
+     * This method displays the given text on the screen.
      */
-    private void displayPrice(int number) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
+    private void displayMessage(String message) {
+        TextView orderSummaryTextView = (TextView) findViewById(R.id.order_summary_text_view);
+        orderSummaryTextView.setText(message);
     }
 }
